@@ -92,6 +92,7 @@ const TemplateCanvas = forwardRef<HTMLDivElement, Props>(
     };
 
     const renderGradientOverlay = () => {
+      if (fmt.category !== 'social') return null;
       if (!state.gradientEnabled || !state.imageUrl) return null;
       return (
         <div
