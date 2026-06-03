@@ -68,30 +68,53 @@ const TemplateCanvas = forwardRef<HTMLDivElement, Props>(
     );
 
     const renderFooter = () => {
-      // Comment out the empty URL field placeholder/footer rendering if url is empty per user request
       const showFooter = !!state.url;
-
       if (!showFooter) return null;
 
       return zone('url', styles.footer, (
         <div className={styles.footerInner}>
-          {/* QR Code commented out for now
-          {qrDataUrl ? (
-            <img src={qrDataUrl} alt="QR" className={styles.qrImg} />
-          ) : (
-            isEditing && (
-              <div className={styles.qrImgPlaceholder} style={{ borderColor: swatch.textSecondary }}>
-                <span className={styles.qrPlaceholderText} style={{ color: swatch.textSecondary }}>QR</span>
-              </div>
-            )
-          )}
-          */}
           <span className={styles.urlText} style={{ color: swatch.textSecondary }}>
             {state.url}
           </span>
         </div>
       ));
     };
+
+    // Step 3.3 styles
+    const imageStyle: React.CSSProperties = {
+      transform: `scale(${state.imageZoom}) translate(${state.imageOffsetX}px, ${state.imageOffsetY}px)`,
+      transformOrigin: 'center center',
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      display: 'block',
+      transition: 'transform 0.05s ease-out',
+    };
+
+    const renderGradientOverlay = () => {
+      if (!state.gradientEnabled || !state.imageUrl) return null;
+      return (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: `linear-gradient(to bottom, transparent ${state.gradientStart * 100}%, ${state.gradientColor} 100%)`,
+            pointerEvents: 'none',
+            zIndex: 1,
+          }}
+        />
+      );
+    };
+
+    // Step 3.5 styles
+    const glowStyle: React.CSSProperties = state.textGlow
+      ? { textShadow: '0 0 10px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.9)' }
+      : {};
+
+    const overlayTextColor = getOverlayTextColor(swatch);
 
     return (
       <div
@@ -112,6 +135,7 @@ const TemplateCanvas = forwardRef<HTMLDivElement, Props>(
             color: swatch.textPrimary,
             '--canvas-width': fmt.widthPx,
             '--canvas-height': fmt.heightPx,
+            '--font-size-multiplier': state.fontSizeMultiplier,
           } as React.CSSProperties}
         >
           {/* Header bar */}
@@ -136,6 +160,10 @@ const TemplateCanvas = forwardRef<HTMLDivElement, Props>(
               zone={zone}
               formatId={formatId}
               renderFooter={renderFooter}
+              imageStyle={imageStyle}
+              renderGradientOverlay={renderGradientOverlay}
+              glowStyle={glowStyle}
+              overlayTextColor={overlayTextColor}
             />
           )}
           {state.presetId === 'layout-2' && (
@@ -144,6 +172,9 @@ const TemplateCanvas = forwardRef<HTMLDivElement, Props>(
               swatch={swatch}
               zone={zone}
               renderFooter={renderFooter}
+              imageStyle={imageStyle}
+              renderGradientOverlay={renderGradientOverlay}
+              glowStyle={glowStyle}
             />
           )}
           {state.presetId === 'layout-3' && (
@@ -152,6 +183,9 @@ const TemplateCanvas = forwardRef<HTMLDivElement, Props>(
               swatch={swatch}
               zone={zone}
               renderFooter={renderFooter}
+              imageStyle={imageStyle}
+              renderGradientOverlay={renderGradientOverlay}
+              glowStyle={glowStyle}
             />
           )}
           {state.presetId === 'layout-4' && (
@@ -160,6 +194,9 @@ const TemplateCanvas = forwardRef<HTMLDivElement, Props>(
               swatch={swatch}
               zone={zone}
               renderFooter={renderFooter}
+              imageStyle={imageStyle}
+              renderGradientOverlay={renderGradientOverlay}
+              glowStyle={glowStyle}
             />
           )}
         </div>
@@ -181,30 +218,62 @@ interface LayoutProps {
   zone: ZoneFn;
   formatId?: string;
   renderFooter: () => ReactNode;
+  imageStyle: React.CSSProperties;
+  renderGradientOverlay: () => ReactNode;
+  glowStyle: React.CSSProperties;
+  overlayTextColor?: string;
 }
 
-function Layout1Body({ state, swatch, zone, renderFooter }: LayoutProps) {
-  const overlayTextColor = getOverlayTextColor(swatch);
+function Layout1Body({
+  state,
+  swatch,
+  zone,
+  renderFooter,
+  imageStyle,
+  renderGradientOverlay,
+  glowStyle,
+  overlayTextColor,
+}: LayoutProps) {
   const showFooter = !!state.url;
+  const titleColor = state.textColor === '#ffffff' ? (overlayTextColor || '#000') : state.textColor;
 
   return (
     <div className={styles.layout1Body}>
       {/* Main Image field (Grey Field) */}
       {zone('image', `${styles.layout1ImageZone} ${showFooter ? styles.layout1ImageZoneWithFooter : ''}`, (
-        state.imageUrl ? (
-          <img src={state.imageUrl} alt="" className={styles.fillImg} />
-        ) : (
-          <div
-            className={styles.imagePlaceholder}
-            style={{ backgroundColor: swatch.accent + '22' }}
-          />
-        )
+        <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+          {state.imageUrl ? (
+            <img src={state.imageUrl} alt="" style={imageStyle} />
+          ) : (
+            <div
+              className={styles.imagePlaceholder}
+              style={{ backgroundColor: swatch.accent + '22', width: '100%', height: '100%' }}
+            />
+          )}
+          {renderGradientOverlay()}
+          {state.imageUrl && state.imageCredit && (
+            <span
+              style={{
+                position: 'absolute',
+                bottom: '10px',
+                right: '10px',
+                fontSize: '12px',
+                color: state.textColor,
+                zIndex: 2,
+                opacity: 0.8,
+                pointerEvents: 'none',
+              }}
+            >
+              {state.imageCredit}
+            </span>
+          )}
+        </div>
       ))}
 
       {/* White text overlay box */}
       <div className={styles.layout1TextOverlay}>
         {zone('title', styles.titleZone, (
-          <h1 className={styles.layout1Title} style={{ color: overlayTextColor }}>
+          <h1 className={styles.layout1Title} style={{ color: titleColor, ...glowStyle }}>
             {state.title || 'Haupttitel'}
           </h1>
         ))}
@@ -221,14 +290,25 @@ function Layout1Body({ state, swatch, zone, renderFooter }: LayoutProps) {
   );
 }
 
-function Layout2Body({ state, swatch, zone, renderFooter }: LayoutProps) {
+function Layout2Body({
+  state,
+  swatch,
+  zone,
+  renderFooter,
+  imageStyle,
+  renderGradientOverlay,
+  glowStyle,
+}: LayoutProps) {
+  const defaultTitleColor = getTextBoxTextColor(swatch);
+  const titleColor = state.textColor === '#ffffff' ? defaultTitleColor : state.textColor;
+
   return (
     <div className={styles.body}>
       <div className={styles.twoCol}>
         <div className={styles.textBoxFull}>
           <div className={styles.textBoxInner} style={{ backgroundColor: swatch.accent }}>
             {zone('title', styles.titleZone, (
-              <p className={styles.title} style={{ color: getTextBoxTextColor(swatch) }}>{state.title}</p>
+              <p className={styles.title} style={{ color: titleColor, ...glowStyle }}>{state.title}</p>
             ))}
             {zone('boxText', styles.boxTextZone, (
               <p className={styles.boxText} style={{ color: getTextBoxTextColor(swatch) }}>{state.boxText}</p>
@@ -236,9 +316,33 @@ function Layout2Body({ state, swatch, zone, renderFooter }: LayoutProps) {
           </div>
         </div>
         {zone('image', styles.imageSideFull, (
-          state.imageUrl
-            ? <img src={state.imageUrl} alt="" className={styles.fillImg} />
-            : <div className={styles.imagePlaceholder} style={{ backgroundColor: swatch.accent + '33' }} />
+          <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+            {state.imageUrl ? (
+              <img src={state.imageUrl} alt="" style={imageStyle} />
+            ) : (
+              <div
+                className={styles.imagePlaceholder}
+                style={{ backgroundColor: swatch.accent + '33', width: '100%', height: '100%' }}
+              />
+            )}
+            {renderGradientOverlay()}
+            {state.imageUrl && state.imageCredit && (
+              <span
+                style={{
+                  position: 'absolute',
+                  bottom: '10px',
+                  right: '10px',
+                  fontSize: '12px',
+                  color: state.textColor,
+                  zIndex: 2,
+                  opacity: 0.8,
+                  pointerEvents: 'none',
+                }}
+              >
+                {state.imageCredit}
+              </span>
+            )}
+          </div>
         ))}
       </div>
       {renderFooter()}
@@ -246,17 +350,49 @@ function Layout2Body({ state, swatch, zone, renderFooter }: LayoutProps) {
   );
 }
 
-function Layout3Body({ state, swatch, zone, renderFooter }: LayoutProps) {
+function Layout3Body({
+  state,
+  swatch,
+  zone,
+  renderFooter,
+  imageStyle,
+  renderGradientOverlay,
+  glowStyle,
+}: LayoutProps) {
   return (
     <div className={styles.body} style={{ position: 'relative' }}>
       {zone('image', styles.imageFullBleed, (
-        state.imageUrl
-          ? <img src={state.imageUrl} alt="" className={styles.fillImg} />
-          : <div className={styles.imagePlaceholder} style={{ backgroundColor: swatch.accent + '44' }} />
+        <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+          {state.imageUrl ? (
+            <img src={state.imageUrl} alt="" style={imageStyle} />
+          ) : (
+            <div
+              className={styles.imagePlaceholder}
+              style={{ backgroundColor: swatch.accent + '44', width: '100%', height: '100%' }}
+            />
+          )}
+          {renderGradientOverlay()}
+          {state.imageUrl && state.imageCredit && (
+            <span
+              style={{
+                position: 'absolute',
+                bottom: '10px',
+                right: '10px',
+                fontSize: '12px',
+                color: state.textColor,
+                zIndex: 2,
+                opacity: 0.8,
+                pointerEvents: 'none',
+              }}
+            >
+              {state.imageCredit}
+            </span>
+          )}
+        </div>
       ))}
       <div className={styles.textOverlay}>
         {zone('title', styles.titleZone, (
-          <p className={styles.titleLarge}>{state.title}</p>
+          <p className={styles.titleLarge} style={{ color: state.textColor, ...glowStyle }}>{state.title}</p>
         ))}
         {zone('boxText', styles.boxTextZone, (
           <p className={styles.boxText} style={{ color: '#FFFFFF' }}>{state.boxText}</p>
@@ -267,13 +403,23 @@ function Layout3Body({ state, swatch, zone, renderFooter }: LayoutProps) {
   );
 }
 
-function Layout4Body({ state, swatch, zone, renderFooter }: LayoutProps) {
+function Layout4Body({
+  state,
+  swatch,
+  zone,
+  renderFooter,
+  imageStyle,
+  renderGradientOverlay,
+  glowStyle,
+}: LayoutProps) {
+  const titleColor = state.textColor === '#ffffff' ? swatch.accent : state.textColor;
+
   return (
     <div className={styles.body}>
       <div className={styles.textFocus}>
         <div style={{ width: '100%' }}>
           {zone('title', styles.titleZone, (
-            <p className={styles.titleXL} style={{ color: swatch.accent }}>{state.title}</p>
+            <p className={styles.titleXL} style={{ color: titleColor, ...glowStyle }}>{state.title}</p>
           ))}
           {zone('boxText', styles.boxTextZone, (
             <p className={styles.boxTextLarge} style={{ color: swatch.textPrimary }}>{state.boxText}</p>
@@ -281,9 +427,33 @@ function Layout4Body({ state, swatch, zone, renderFooter }: LayoutProps) {
         </div>
       </div>
       {zone('image', styles.imageStrip, (
-        state.imageUrl
-          ? <img src={state.imageUrl} alt="" className={styles.fillImg} />
-          : <div className={styles.imagePlaceholder} style={{ backgroundColor: swatch.accent + '33' }} />
+        <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+          {state.imageUrl ? (
+            <img src={state.imageUrl} alt="" style={imageStyle} />
+          ) : (
+            <div
+              className={styles.imagePlaceholder}
+              style={{ backgroundColor: swatch.accent + '33', width: '100%', height: '100%' }}
+            />
+          )}
+          {renderGradientOverlay()}
+          {state.imageUrl && state.imageCredit && (
+            <span
+              style={{
+                position: 'absolute',
+                bottom: '10px',
+                right: '10px',
+                fontSize: '12px',
+                color: state.textColor,
+                zIndex: 2,
+                opacity: 0.8,
+                pointerEvents: 'none',
+              }}
+            >
+              {state.imageCredit}
+            </span>
+          )}
+        </div>
       ))}
       {renderFooter()}
     </div>

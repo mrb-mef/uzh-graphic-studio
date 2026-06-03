@@ -1,4 +1,4 @@
-export type FormatId = 'a4' | 'a5' | 'a3' | 'a0' | 'sq' | 'port' | 'story' | 'screen';
+export type FormatId = 'a4' | 'a5' | 'a3' | 'a0' | 'sq' | 'port' | 'land' | 'story' | 'screen';
 
 export type FormatCategory = 'print' | 'social' | 'digital';
 
@@ -44,6 +44,19 @@ export interface DesignState {
   fontWeight: FontWeight;
   url: string;
   activeFormatIds: FormatId[];
+
+  // Step 3.3 (Adjust Image)
+  imageZoom: number;
+  imageOffsetX: number;
+  imageOffsetY: number;
+  gradientEnabled: boolean;
+  gradientStart: number;
+  gradientColor: string;
+
+  // Step 3.5 (Text adjustments)
+  fontSizeMultiplier: number;
+  textGlow: boolean;
+  textColor: string;
 }
 
 export type ZoneId =

@@ -17,6 +17,19 @@ const INITIAL_STATE: DesignState = {
   fontWeight: 400,
   url: '',
   activeFormatIds: DEFAULT_FORMAT_IDS,
+  
+  // Step 3.3 (Adjust Image)
+  imageZoom: 1.0,
+  imageOffsetX: 0,
+  imageOffsetY: 0,
+  gradientEnabled: true,
+  gradientStart: 0.5,
+  gradientColor: '#0028A5',
+
+  // Step 3.5 (Text adjustments)
+  fontSizeMultiplier: 1.0,
+  textGlow: false,
+  textColor: '#ffffff',
 };
 
 export function useDesignState() {
@@ -54,6 +67,20 @@ export function useDesignState() {
   }, []);
   const setUrl = useCallback((v: string) => update('url', v), [update]);
 
+  // Step 3.3
+  const setImageZoom = useCallback((v: number) => update('imageZoom', v), [update]);
+  const setImageOffsetX = useCallback((v: number) => update('imageOffsetX', v), [update]);
+  const setImageOffsetY = useCallback((v: number) => update('imageOffsetY', v), [update]);
+  const setGradientEnabled = useCallback((v: boolean) => update('gradientEnabled', v), [update]);
+  const setGradientStart = useCallback((v: number) => update('gradientStart', v), [update]);
+  const setGradientColor = useCallback((v: string) => update('gradientColor', v), [update]);
+
+  // Step 3.5
+  const setFontSizeMultiplier = useCallback((v: number) => update('fontSizeMultiplier', v), [update]);
+  const setTextGlow = useCallback((v: boolean) => update('textGlow', v), [update]);
+  const setTextColor = useCallback((v: string) => update('textColor', v), [update]);
+  const setImageCredit = useCallback((v: string | null) => update('imageCredit', v), [update]);
+
   return {
     state,
     update,
@@ -69,5 +96,19 @@ export function useDesignState() {
     setUseCustomOrgUnit,
     setImageUrl,
     setUrl,
+    
+    // Step 3.3
+    setImageZoom,
+    setImageOffsetX,
+    setImageOffsetY,
+    setGradientEnabled,
+    setGradientStart,
+    setGradientColor,
+
+    // Step 3.5
+    setFontSizeMultiplier,
+    setTextGlow,
+    setTextColor,
+    setImageCredit,
   };
 }

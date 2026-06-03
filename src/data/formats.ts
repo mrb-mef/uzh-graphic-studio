@@ -7,6 +7,7 @@ export const OUTPUT_FORMATS: OutputFormat[] = [
   { id: 'a0',     label: 'A0 Poster',       widthPx: 9933,  heightPx: 14043, category: 'print' },
   { id: 'sq',     label: 'Social Square',   widthPx: 1080,  heightPx: 1080,  category: 'social' },
   { id: 'port',   label: 'Social Portrait', widthPx: 1080,  heightPx: 1350,  category: 'social' },
+  { id: 'land',   label: 'Social Landscape',widthPx: 1200,  heightPx: 628,   category: 'social' },
   { id: 'story',  label: 'Story',           widthPx: 1080,  heightPx: 1920,  category: 'social' },
   { id: 'screen', label: 'Screen 16:9',     widthPx: 1920,  heightPx: 1080,  category: 'digital' },
 ];

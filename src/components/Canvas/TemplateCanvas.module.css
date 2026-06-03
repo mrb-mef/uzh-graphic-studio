@@ -120,7 +120,7 @@
 }
 
 .layout1Title {
-  font-size: calc(var(--canvas-width) * 0.0387 * 1px);
+  font-size: calc(var(--canvas-width) * 0.0387 * var(--font-size-multiplier, 1) * 1px);
   font-weight: 700;
   line-height: 1.1;
   margin: 0 0 calc(var(--canvas-width) * 0.0129 * 1px) 0;
@@ -232,7 +232,7 @@
 
 /* ── Typography ── */
 .title {
-  font-size: calc(var(--canvas-width) * 0.0387 * 1px);
+  font-size: calc(var(--canvas-width) * 0.0387 * var(--font-size-multiplier, 1) * 1px);
   font-weight: 700;
   line-height: 1.1;
   margin: 0 0 calc(var(--canvas-width) * 0.0193 * 1px);
@@ -240,7 +240,7 @@
 }
 
 .titleLarge {
-  font-size: calc(var(--canvas-width) * 0.0484 * 1px);
+  font-size: calc(var(--canvas-width) * 0.0484 * var(--font-size-multiplier, 1) * 1px);
   font-weight: 700;
   line-height: 1.05;
   margin: 0 0 calc(var(--canvas-width) * 0.0193 * 1px);
@@ -248,7 +248,7 @@
 }
 
 .titleXL {
-  font-size: calc(var(--canvas-width) * 0.0645 * 1px);
+  font-size: calc(var(--canvas-width) * 0.0645 * var(--font-size-multiplier, 1) * 1px);
   font-weight: 700;
   line-height: 1;
   margin: 0 0 calc(var(--canvas-width) * 0.0258 * 1px);

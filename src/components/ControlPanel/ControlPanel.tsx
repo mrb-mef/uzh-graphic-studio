@@ -41,7 +41,14 @@ export default function ControlPanel({
             ← Back
           </button>
           {activeZone === 'title' && (
-            <PanelTitle value={state.title} onChange={actions.setTitle} />
+            <PanelTitle
+              value={state.title}
+              onChange={actions.setTitle}
+              state={state}
+              onFontSizeMultiplierChange={actions.setFontSizeMultiplier}
+              onTextGlowChange={actions.setTextGlow}
+              onTextColorChange={actions.setTextColor}
+            />
           )}
           {activeZone === 'boxText' && (
             <PanelBoxText value={state.boxText} onChange={actions.setBoxText} />
@@ -57,7 +64,17 @@ export default function ControlPanel({
             />
           )}
           {activeZone === 'image' && (
-            <PanelImage onImageSelect={actions.setImageUrl} />
+            <PanelImage
+              state={state}
+              onImageSelect={actions.setImageUrl}
+              onImageZoomChange={actions.setImageZoom}
+              onImageOffsetXChange={actions.setImageOffsetX}
+              onImageOffsetYChange={actions.setImageOffsetY}
+              onGradientEnabledChange={actions.setGradientEnabled}
+              onGradientStartChange={actions.setGradientStart}
+              onGradientColorChange={actions.setGradientColor}
+              onImageCreditChange={actions.setImageCredit}
+            />
           )}
           {activeZone === 'url' && (
             <PanelUrl value={state.url} onChange={actions.setUrl} />

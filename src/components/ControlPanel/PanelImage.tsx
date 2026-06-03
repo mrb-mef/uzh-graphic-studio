@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import type { DesignState } from '../../types';
 import styles from './panels.module.css';
 
 interface UnsplashPhoto {
@@ -15,10 +16,28 @@ interface WikiPhoto {
 }
 
 interface Props {
+  state: DesignState;
   onImageSelect: (url: string | null, credit: string | null) => void;
+  onImageZoomChange: (v: number) => void;
+  onImageOffsetXChange: (v: number) => void;
+  onImageOffsetYChange: (v: number) => void;
+  onGradientEnabledChange: (v: boolean) => void;
+  onGradientStartChange: (v: number) => void;
+  onGradientColorChange: (v: string) => void;
+  onImageCreditChange: (v: string | null) => void;
 }
 
-export default function PanelImage({ onImageSelect }: Props) {
+export default function PanelImage({
+  state,
+  onImageSelect,
+  onImageZoomChange,
+  onImageOffsetXChange,
+  onImageOffsetYChange,
+  onGradientEnabledChange,
+  onGradientStartChange,
+  onGradientColorChange,
+  onImageCreditChange,
+}: Props) {
   const [tab, setTab] = useState<'upload' | 'unsplash' | 'wikimedia'>('upload');
   const [unsplashQuery, setUnsplashQuery] = useState('');
   const [unsplashResults, setUnsplashResults] = useState<UnsplashPhoto[]>([]);
@@ -88,7 +107,7 @@ export default function PanelImage({ onImageSelect }: Props) {
 
   return (
     <div className={styles.section}>
-      <h3 className={styles.sectionTitle}>Image</h3>
+      <h3 className={styles.sectionTitle}>Image Selection</h3>
 
       <div className={styles.tabRow}>
         {(['upload', 'unsplash', 'wikimedia'] as const).map((t) => (
@@ -168,9 +187,140 @@ export default function PanelImage({ onImageSelect }: Props) {
         </div>
       )}
 
-      <button className={styles.clearBtn} onClick={() => onImageSelect(null, null)}>
-        Remove image
-      </button>
+      {state.imageUrl && (
+        <button className={styles.clearBtn} onClick={() => onImageSelect(null, null)}>
+          Remove image
+        </button>
+      )}
+
+      {state.imageUrl && (
+        <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <hr className={styles.dividerSub} />
+          <h4 className={styles.sectionTitle} style={{ color: '#0028A5' }}>Step 3.3: Adjust Image</h4>
+          
+          <div className={styles.checkboxLabel}>
+            <input
+              type="checkbox"
+              id="gradientEnabled"
+              checked={state.gradientEnabled}
+              onChange={(e) => onGradientEnabledChange(e.target.checked)}
+            />
+            <label htmlFor="gradientEnabled" style={{ fontWeight: 600 }}>Enable brand gradient overlay</label>
+          </div>
+
+          <label className={styles.sliderGroup}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+              <span>Zoom</span>
+              <strong>{state.imageZoom.toFixed(2)}×</strong>
+            </div>
+            <input
+              type="range"
+              min="1"
+              max="3"
+              step="0.01"
+              value={state.imageZoom}
+              onChange={(e) => onImageZoomChange(parseFloat(e.target.value))}
+              style={{ width: '100%' }}
+            />
+          </label>
+
+          <label className={styles.sliderGroup}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+              <span>Horizontal position</span>
+              <strong>{Math.round(state.imageOffsetX)}px</strong>
+            </div>
+            <input
+              type="range"
+              min="-1000"
+              max="1000"
+              step="1"
+              value={state.imageOffsetX}
+              onChange={(e) => onImageOffsetXChange(parseInt(e.target.value))}
+              style={{ width: '100%' }}
+            />
+          </label>
+
+          <label className={styles.sliderGroup}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+              <span>Vertical position</span>
+              <strong>{Math.round(state.imageOffsetY)}px</strong>
+            </div>
+            <input
+              type="range"
+              min="-1000"
+              max="1000"
+              step="1"
+              value={state.imageOffsetY}
+              onChange={(e) => onImageOffsetYChange(parseInt(e.target.value))}
+              style={{ width: '100%' }}
+            />
+          </label>
+
+          {state.gradientEnabled && (
+            <>
+              <label className={styles.sliderGroup}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                  <span>Gradient start</span>
+                  <strong>{Math.round(state.gradientStart * 100)}%</strong>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={state.gradientStart}
+                  onChange={(e) => onGradientStartChange(parseFloat(e.target.value))}
+                  style={{ width: '100%' }}
+                />
+              </label>
+
+              <div className={styles.field}>
+                <span style={{ fontSize: '12px' }}>Gradient overlay color</span>
+                <div className={styles.colorPickerWrapper} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '4px' }}>
+                  <input
+                    type="color"
+                    value={state.gradientColor}
+                    onChange={(e) => onGradientColorChange(e.target.value)}
+                    className={styles.colorPicker}
+                  />
+                  <div className={styles.colorPresets} style={{ display: 'flex', gap: '4px' }}>
+                    {['#0028A5', '#000000', '#333333', '#ffffff'].map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        className={`${styles.colorPreset} ${state.gradientColor === c ? styles.colorPresetActive : ''}`}
+                        style={{
+                          backgroundColor: c,
+                          width: '18px',
+                          height: '18px',
+                          borderRadius: '50%',
+                          border: state.gradientColor === c ? '2px solid #0028A5' : '1px solid #ccc',
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => onGradientColorChange(c)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          <hr className={styles.dividerSub} />
+
+          <label className={styles.field}>
+            <span style={{ fontSize: '12px' }}>Optional image credit (Step 3.5)</span>
+            <input
+              type="text"
+              className={styles.input}
+              value={state.imageCredit || ''}
+              onChange={(e) => onImageCreditChange(e.target.value || null)}
+              placeholder="e.g. Photo: UZH / Name"
+              style={{ marginTop: '4px' }}
+            />
+          </label>
+        </div>
+      )}
     </div>
   );
 }
