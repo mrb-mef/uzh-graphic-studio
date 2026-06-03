@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import type { DesignState } from '../../types';
 import { getSwatchById } from '../../data/colors';
+import { getFormatById } from '../../data/formats';
 import styles from './panels.module.css';
 
 interface UnsplashPhoto {
@@ -26,6 +27,7 @@ interface Props {
   onGradientStartChange: (v: number) => void;
   onGradientColorChange: (v: string) => void;
   onImageCreditChange: (v: string | null) => void;
+  onSocialImageCreditChange: (v: string | null) => void;
 }
 
 export default function PanelImage({
@@ -38,6 +40,7 @@ export default function PanelImage({
   onGradientStartChange,
   onGradientColorChange,
   onImageCreditChange,
+  onSocialImageCreditChange,
 }: Props) {
   const [tab, setTab] = useState<'upload' | 'unsplash' | 'wikimedia'>('upload');
   const [unsplashQuery, setUnsplashQuery] = useState('');
@@ -314,17 +317,49 @@ export default function PanelImage({
 
           <hr className={styles.dividerSub} />
 
-          <label className={styles.field}>
-            <span style={{ fontSize: '12px' }}>Optional image credit (Step 3.5)</span>
-            <input
-              type="text"
-              className={styles.input}
-              value={state.imageCredit || ''}
-              onChange={(e) => onImageCreditChange(e.target.value || null)}
-              placeholder="e.g. Photo: UZH / Name"
-              style={{ marginTop: '4px' }}
-            />
-          </label>
+          {(() => {
+            const hasPrintOrDigital = state.activeFormatIds.some((id) => {
+              const fmt = getFormatById(id);
+              return fmt.category === 'print' || fmt.category === 'digital';
+            });
+
+            const hasSocial = state.activeFormatIds.some((id) => {
+              const fmt = getFormatById(id);
+              return fmt.category === 'social';
+            });
+
+            return (
+              <>
+                {hasPrintOrDigital && (
+                  <label className={styles.field} style={{ marginBottom: hasSocial ? '12px' : '0' }}>
+                    <span style={{ fontSize: '12px' }}>Optional image credit (Print & Digital)</span>
+                    <input
+                      type="text"
+                      className={styles.input}
+                      value={state.imageCredit || ''}
+                      onChange={(e) => onImageCreditChange(e.target.value || null)}
+                      placeholder="e.g. Photo: UZH / Name"
+                      style={{ marginTop: '4px' }}
+                    />
+                  </label>
+                )}
+
+                {hasSocial && (
+                  <label className={styles.field}>
+                    <span style={{ fontSize: '12px' }}>Optional image credit (Social)</span>
+                    <input
+                      type="text"
+                      className={styles.input}
+                      value={state.socialImageCredit || ''}
+                      onChange={(e) => onSocialImageCreditChange(e.target.value || null)}
+                      placeholder="e.g. Photo: UZH / Name"
+                      style={{ marginTop: '4px' }}
+                    />
+                  </label>
+                )}
+              </>
+            );
+          })()}
         </div>
       )}
     </div>

@@ -77,6 +77,7 @@ export default function ControlPanel({
               onGradientStartChange={actions.setGradientStart}
               onGradientColorChange={actions.setGradientColor}
               onImageCreditChange={actions.setImageCredit}
+              onSocialImageCreditChange={actions.setSocialImageCredit}
             />
           )}
           {activeZone === 'url' && (

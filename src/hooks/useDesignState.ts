@@ -34,6 +34,7 @@ const INITIAL_STATE: DesignState = {
   // Independent Social Fields
   socialTitle: 'Your Event Title',
   socialFontSizeMultiplier: 1.0,
+  socialImageCredit: null,
 };
 
 export function useDesignState() {
@@ -67,7 +68,7 @@ export function useDesignState() {
   const setOrgUnitCustom = useCallback((v: string) => update('orgUnitCustom', v), [update]);
   const setUseCustomOrgUnit = useCallback((v: boolean) => update('useCustomOrgUnit', v), [update]);
   const setImageUrl = useCallback((url: string | null, credit: string | null) => {
-    setState((prev) => ({ ...prev, imageUrl: url, imageCredit: credit }));
+    setState((prev) => ({ ...prev, imageUrl: url, imageCredit: credit, socialImageCredit: credit }));
   }, []);
   const setUrl = useCallback((v: string) => update('url', v), [update]);
 
@@ -88,6 +89,7 @@ export function useDesignState() {
   // Social Fields
   const setSocialTitle = useCallback((v: string) => update('socialTitle', v), [update]);
   const setSocialFontSizeMultiplier = useCallback((v: number) => update('socialFontSizeMultiplier', v), [update]);
+  const setSocialImageCredit = useCallback((v: string | null) => update('socialImageCredit', v), [update]);
 
   return {
     state,
@@ -122,5 +124,6 @@ export function useDesignState() {
     // Social Fields
     setSocialTitle,
     setSocialFontSizeMultiplier,
+    setSocialImageCredit,
   };
 }

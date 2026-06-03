@@ -502,7 +502,7 @@ function SocialBody({
           {renderGradientOverlay()}
           
           {/* Image Credit */}
-          {state.imageUrl && state.imageCredit && (
+          {state.imageUrl && state.socialImageCredit && (
             <span
               style={{
                 position: 'absolute',
@@ -515,7 +515,7 @@ function SocialBody({
                 pointerEvents: 'none',
               }}
             >
-              {state.imageCredit}
+              {state.socialImageCredit}
             </span>
           )}
         </div>

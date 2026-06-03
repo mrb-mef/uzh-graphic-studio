@@ -61,6 +61,7 @@ export interface DesignState {
   // Independent Social Fields
   socialTitle: string;
   socialFontSizeMultiplier: number;
+  socialImageCredit: string | null;
 }
 
 export type ZoneId =
