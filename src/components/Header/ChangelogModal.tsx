@@ -10,9 +10,16 @@ interface ChangelogVersion {
 
 const CHANGELOG_DATA: ChangelogVersion[] = [
   {
-    version: '1.3.0',
+    version: '1.3.1',
     date: '2026-06-03',
     isLatest: true,
+    changes: [
+      'Corrected export dimensions for standard print formats (A4, A5, A3, A0) to match their exact physical size in millimeters rather than pixel density.',
+    ],
+  },
+  {
+    version: '1.3.0',
+    date: '2026-06-03',
     changes: [
       'Implemented independent image adjustments (zoom, offsets, and gradient overlay) for Print/Digital vs. Social category templates.',
       'Split the Adjust Image control panel section to show Print & Digital vs. Social sub-controls based on active formats.',

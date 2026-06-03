@@ -2,6 +2,13 @@
 
 All notable changes to the **UZH Graphic Studio** project will be documented in this file.
 
+## [1.3.1] - 2026-06-03
+
+### Fixed
+- **Print PDF Export Dimensions**: Configured standard print templates (A4, A5, A3, A0) to export to PDFs with their exact physical millimeter dimensions (e.g. 210 x 297 mm for A4) rather than using screen pixel scaling. This ensures standard paper sizes are respected on download and print.
+
+---
+
 ## [1.3.0] - 2026-06-03
 
 ### Added

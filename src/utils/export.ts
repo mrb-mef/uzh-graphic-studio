@@ -52,6 +52,13 @@ export async function exportFormatAsJpeg(
   return blob;
 }
 
+const PRINT_FORMAT_DIMENSIONS: Record<string, [number, number]> = {
+  a4: [210, 297],
+  a5: [148, 210],
+  a3: [297, 420],
+  a0: [841, 1189],
+};
+
 export async function exportFormatAsPdf(
   el: HTMLElement,
   formatId: FormatId,
@@ -73,15 +80,26 @@ export async function exportFormatAsPdf(
     throw new Error(`Failed to render format ${formatId} for PDF`);
   }
 
-  const pdf = new jsPDF({
-    orientation: fmt.widthPx > fmt.heightPx ? 'landscape' : 'portrait',
-    unit: 'px',
-    format: [fmt.widthPx, fmt.heightPx],
-    hotfixes: ['px_scaling'],
-  });
-
-  pdf.addImage(dataUrl, 'PNG', 0, 0, fmt.widthPx, fmt.heightPx);
-  return pdf.output('blob');
+  const dims = PRINT_FORMAT_DIMENSIONS[formatId];
+  if (dims) {
+    const [widthMm, heightMm] = dims;
+    const pdf = new jsPDF({
+      orientation: widthMm > heightMm ? 'landscape' : 'portrait',
+      unit: 'mm',
+      format: [widthMm, heightMm],
+    });
+    pdf.addImage(dataUrl, 'PNG', 0, 0, widthMm, heightMm);
+    return pdf.output('blob');
+  } else {
+    const pdf = new jsPDF({
+      orientation: fmt.widthPx > fmt.heightPx ? 'landscape' : 'portrait',
+      unit: 'px',
+      format: [fmt.widthPx, fmt.heightPx],
+      hotfixes: ['px_scaling'],
+    });
+    pdf.addImage(dataUrl, 'PNG', 0, 0, fmt.widthPx, fmt.heightPx);
+    return pdf.output('blob');
+  }
 }
 
 export async function exportAllAsZip(
