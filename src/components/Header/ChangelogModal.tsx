@@ -10,14 +10,23 @@ interface ChangelogVersion {
 
 const CHANGELOG_DATA: ChangelogVersion[] = [
   {
-    version: '1.2.0',
-    date: '2026-05-29',
+    version: '1.3.0',
+    date: '2026-06-03',
     isLatest: true,
     changes: [
-      'Fixed ZIP export function to download visual assets reliably across all browsers.',
-      'Resolved canvas rendering issues where CSS transform scaling caused blank or clipped PNG output.',
-      'Introduced version numbering badge in the header next to the tool name.',
-      'Added interactive change log dialog showing release history.',
+      'Implemented independent image adjustments (zoom, offsets, and gradient overlay) for Print/Digital vs. Social category templates.',
+      'Split the Adjust Image control panel section to show Print & Digital vs. Social sub-controls based on active formats.',
+      'Made Print & Digital and Social image credit fields completely independent and optional.',
+    ],
+  },
+  {
+    version: '1.2.0',
+    date: '2026-06-03',
+    changes: [
+      'Configured Print layouts to export automatically to high-resolution PDFs, and Social/Digital formats to PNG and JPEG image assets.',
+      'Separated content title (Headline) and font size multipliers for Print & Digital vs. Social layouts.',
+      'Added dynamic color presets to the brand gradient overlay using the active swatch colors.',
+      'Updated Social layouts to hide logo, faculty labels, and details boxes, ensuring full-bleed background coverage.',
     ],
   },
   {
