@@ -138,36 +138,25 @@ const TemplateCanvas = forwardRef<HTMLDivElement, Props>(
             '--font-size-multiplier': state.fontSizeMultiplier,
           } as React.CSSProperties}
         >
-          {/* Header bar */}
-          <div
-            className={styles.header}
-            style={{ backgroundColor: swatch.background }}
-          >
-            {zone('logo', styles.logoZone, (
-              <img src={logoSrc} alt="UZH Logo" className={styles.logoImg} style={logoStyle} />
-            ))}
-            <div className={styles.headerDivider} style={{ backgroundColor: swatch.accent }} />
-            {zone('orgUnit', styles.orgUnitZone, (
-              <span className={styles.orgUnitText} style={{ color: swatch.textPrimary }}>{orgUnitLabel}</span>
-            ))}
-          </div>
+          {/* Header bar - hidden for social templates */}
+          {fmt.category !== 'social' && (
+            <div
+              className={styles.header}
+              style={{ backgroundColor: swatch.background }}
+            >
+              {zone('logo', styles.logoZone, (
+                <img src={logoSrc} alt="UZH Logo" className={styles.logoImg} style={logoStyle} />
+              ))}
+              <div className={styles.headerDivider} style={{ backgroundColor: swatch.accent }} />
+              {zone('orgUnit', styles.orgUnitZone, (
+                <span className={styles.orgUnitText} style={{ color: swatch.textPrimary }}>{orgUnitLabel}</span>
+              ))}
+            </div>
+          )}
 
           {/* Layout body components */}
-          {state.presetId === 'layout-1' && (
-            <Layout1Body
-              state={state}
-              swatch={swatch}
-              zone={zone}
-              formatId={formatId}
-              renderFooter={renderFooter}
-              imageStyle={imageStyle}
-              renderGradientOverlay={renderGradientOverlay}
-              glowStyle={glowStyle}
-              overlayTextColor={overlayTextColor}
-            />
-          )}
-          {state.presetId === 'layout-2' && (
-            <Layout2Body
+          {fmt.category === 'social' ? (
+            <SocialBody
               state={state}
               swatch={swatch}
               zone={zone}
@@ -176,28 +165,55 @@ const TemplateCanvas = forwardRef<HTMLDivElement, Props>(
               renderGradientOverlay={renderGradientOverlay}
               glowStyle={glowStyle}
             />
-          )}
-          {state.presetId === 'layout-3' && (
-            <Layout3Body
-              state={state}
-              swatch={swatch}
-              zone={zone}
-              renderFooter={renderFooter}
-              imageStyle={imageStyle}
-              renderGradientOverlay={renderGradientOverlay}
-              glowStyle={glowStyle}
-            />
-          )}
-          {state.presetId === 'layout-4' && (
-            <Layout4Body
-              state={state}
-              swatch={swatch}
-              zone={zone}
-              renderFooter={renderFooter}
-              imageStyle={imageStyle}
-              renderGradientOverlay={renderGradientOverlay}
-              glowStyle={glowStyle}
-            />
+          ) : (
+            <>
+              {state.presetId === 'layout-1' && (
+                <Layout1Body
+                  state={state}
+                  swatch={swatch}
+                  zone={zone}
+                  formatId={formatId}
+                  renderFooter={renderFooter}
+                  imageStyle={imageStyle}
+                  renderGradientOverlay={renderGradientOverlay}
+                  glowStyle={glowStyle}
+                  overlayTextColor={overlayTextColor}
+                />
+              )}
+              {state.presetId === 'layout-2' && (
+                <Layout2Body
+                  state={state}
+                  swatch={swatch}
+                  zone={zone}
+                  renderFooter={renderFooter}
+                  imageStyle={imageStyle}
+                  renderGradientOverlay={renderGradientOverlay}
+                  glowStyle={glowStyle}
+                />
+              )}
+              {state.presetId === 'layout-3' && (
+                <Layout3Body
+                  state={state}
+                  swatch={swatch}
+                  zone={zone}
+                  renderFooter={renderFooter}
+                  imageStyle={imageStyle}
+                  renderGradientOverlay={renderGradientOverlay}
+                  glowStyle={glowStyle}
+                />
+              )}
+              {state.presetId === 'layout-4' && (
+                <Layout4Body
+                  state={state}
+                  swatch={swatch}
+                  zone={zone}
+                  renderFooter={renderFooter}
+                  imageStyle={imageStyle}
+                  renderGradientOverlay={renderGradientOverlay}
+                  glowStyle={glowStyle}
+                />
+              )}
+            </>
           )}
         </div>
       </div>
@@ -459,3 +475,79 @@ function Layout4Body({
     </div>
   );
 }
+
+function SocialBody({
+  state,
+  swatch,
+  zone,
+  imageStyle,
+  renderGradientOverlay,
+  glowStyle,
+}: LayoutProps) {
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', flex: 1, display: 'flex', flexDirection: 'column' }}>
+      {/* Background Image (Edge to Edge / Full Bleed) */}
+      {zone('image', styles.imageFullBleed, (
+        <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+          {state.imageUrl ? (
+            <img src={state.imageUrl} alt="" style={imageStyle} />
+          ) : (
+            <div
+              className={styles.imagePlaceholder}
+              style={{ backgroundColor: swatch.accent + '22', width: '100%', height: '100%' }}
+            />
+          )}
+          {renderGradientOverlay()}
+          
+          {/* Image Credit */}
+          {state.imageUrl && state.imageCredit && (
+            <span
+              style={{
+                position: 'absolute',
+                bottom: '10px',
+                right: '10px',
+                fontSize: '12px',
+                color: state.textColor,
+                zIndex: 2,
+                opacity: 0.8,
+                pointerEvents: 'none',
+              }}
+            >
+              {state.imageCredit}
+            </span>
+          )}
+        </div>
+      ))}
+
+      {/* Text Overlay (Headline with shadow/glow) */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 'calc(var(--canvas-width) * 0.05 * 1px)',
+          left: 'calc(var(--canvas-width) * 0.05 * 1px)',
+          right: 'calc(var(--canvas-width) * 0.05 * 1px)',
+          zIndex: 10,
+          pointerEvents: 'none',
+        }}
+      >
+        {zone('title', styles.titleZone, (
+          <h1
+            style={{
+              margin: 0,
+              fontSize: 'calc(var(--canvas-width) * 0.045 * var(--font-size-multiplier, 1) * 1px)',
+              fontWeight: 700,
+              lineHeight: 1.15,
+              color: state.textColor,
+              pointerEvents: 'auto',
+              whiteSpace: 'pre-wrap',
+              ...glowStyle,
+            }}
+          >
+            {state.title || 'Your Event Title'}
+          </h1>
+        ))}
+      </div>
+    </div>
+  );
+}
+

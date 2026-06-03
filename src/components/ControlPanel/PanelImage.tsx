@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import type { DesignState } from '../../types';
+import { getSwatchById } from '../../data/colors';
 import styles from './panels.module.css';
 
 interface UnsplashPhoto {
@@ -284,7 +285,12 @@ export default function PanelImage({
                     className={styles.colorPicker}
                   />
                   <div className={styles.colorPresets} style={{ display: 'flex', gap: '4px' }}>
-                    {['#0028A5', '#000000', '#333333', '#ffffff'].map((c) => (
+                    {[
+                      getSwatchById(state.colorSwatchId).background,
+                      getSwatchById(state.colorSwatchId).accent,
+                      getSwatchById(state.colorSwatchId).textPrimary,
+                      getSwatchById(state.colorSwatchId).textSecondary,
+                    ].map((c) => (
                       <button
                         key={c}
                         type="button"
