@@ -271,7 +271,7 @@ function Layout1Body({
       {zone('image', `${styles.layout1ImageZone} ${showFooter ? styles.layout1ImageZoneWithFooter : ''}`, (
         <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
           {state.imageUrl ? (
-            <img src={state.imageUrl} alt="" style={imageStyle} />
+            <img src={state.imageUrl} alt="" style={imageStyle} crossOrigin="anonymous" />
           ) : (
             <div
               className={styles.imagePlaceholder}
@@ -346,7 +346,7 @@ function Layout2Body({
         {zone('image', styles.imageSideFull, (
           <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
             {state.imageUrl ? (
-              <img src={state.imageUrl} alt="" style={imageStyle} />
+              <img src={state.imageUrl} alt="" style={imageStyle} crossOrigin="anonymous" />
             ) : (
               <div
                 className={styles.imagePlaceholder}
@@ -392,7 +392,7 @@ function Layout3Body({
       {zone('image', styles.imageFullBleed, (
         <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
           {state.imageUrl ? (
-            <img src={state.imageUrl} alt="" style={imageStyle} />
+            <img src={state.imageUrl} alt="" style={imageStyle} crossOrigin="anonymous" />
           ) : (
             <div
               className={styles.imagePlaceholder}
@@ -457,7 +457,7 @@ function Layout4Body({
       {zone('image', styles.imageStrip, (
         <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
           {state.imageUrl ? (
-            <img src={state.imageUrl} alt="" style={imageStyle} />
+            <img src={state.imageUrl} alt="" style={imageStyle} crossOrigin="anonymous" />
           ) : (
             <div
               className={styles.imagePlaceholder}
@@ -502,7 +502,7 @@ function SocialBody({
       {zone('image', styles.imageFullBleed, (
         <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
           {state.imageUrl ? (
-            <img src={state.imageUrl} alt="" style={imageStyle} />
+            <img src={state.imageUrl} alt="" style={imageStyle} crossOrigin="anonymous" />
           ) : (
             <div
               className={styles.imagePlaceholder}
