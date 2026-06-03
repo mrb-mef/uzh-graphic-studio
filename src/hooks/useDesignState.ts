@@ -30,6 +30,10 @@ const INITIAL_STATE: DesignState = {
   fontSizeMultiplier: 1.0,
   textGlow: false,
   textColor: '#ffffff',
+
+  // Independent Social Fields
+  socialTitle: 'Your Event Title',
+  socialFontSizeMultiplier: 1.0,
 };
 
 export function useDesignState() {
@@ -81,6 +85,10 @@ export function useDesignState() {
   const setTextColor = useCallback((v: string) => update('textColor', v), [update]);
   const setImageCredit = useCallback((v: string | null) => update('imageCredit', v), [update]);
 
+  // Social Fields
+  const setSocialTitle = useCallback((v: string) => update('socialTitle', v), [update]);
+  const setSocialFontSizeMultiplier = useCallback((v: number) => update('socialFontSizeMultiplier', v), [update]);
+
   return {
     state,
     update,
@@ -110,5 +118,9 @@ export function useDesignState() {
     setTextGlow,
     setTextColor,
     setImageCredit,
+
+    // Social Fields
+    setSocialTitle,
+    setSocialFontSizeMultiplier,
   };
 }

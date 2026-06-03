@@ -57,6 +57,10 @@ export interface DesignState {
   fontSizeMultiplier: number;
   textGlow: boolean;
   textColor: string;
+
+  // Independent Social Fields
+  socialTitle: string;
+  socialFontSizeMultiplier: number;
 }
 
 export type ZoneId =

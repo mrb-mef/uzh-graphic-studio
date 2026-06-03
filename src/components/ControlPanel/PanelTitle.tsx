@@ -1,11 +1,15 @@
 import type { DesignState } from '../../types';
+import { getFormatById } from '../../data/formats';
 import styles from './panels.module.css';
 
 interface Props {
   value: string;
   onChange: (v: string) => void;
+  socialValue: string;
+  onSocialChange: (v: string) => void;
   state: DesignState;
   onFontSizeMultiplierChange: (v: number) => void;
+  onSocialFontSizeMultiplierChange: (v: number) => void;
   onTextGlowChange: (v: boolean) => void;
   onTextColorChange: (v: string) => void;
 }
@@ -13,43 +17,88 @@ interface Props {
 export default function PanelTitle({
   value,
   onChange,
+  socialValue,
+  onSocialChange,
   state,
   onFontSizeMultiplierChange,
+  onSocialFontSizeMultiplierChange,
   onTextGlowChange,
   onTextColorChange,
 }: Props) {
+  const hasPrintOrDigital = state.activeFormatIds.some((id) => {
+    const fmt = getFormatById(id);
+    return fmt.category === 'print' || fmt.category === 'digital';
+  });
+
+  const hasSocial = state.activeFormatIds.some((id) => {
+    const fmt = getFormatById(id);
+    return fmt.category === 'social';
+  });
+
   return (
     <div className={styles.section}>
-      <h3 className={styles.sectionTitle}>Headline (Step 3.5)</h3>
-      <textarea
-        className={styles.textarea}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        rows={4}
-        placeholder="Enter your event title..."
-      />
-      <p className={styles.hint}>Click the AI button below to generate suggestions.</p>
+      {hasPrintOrDigital && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: hasSocial ? '1.5rem' : '0' }}>
+          <h3 className={styles.sectionTitle}>Headline (Print & Digital)</h3>
+          <textarea
+            className={styles.textarea}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            rows={4}
+            placeholder="Enter print event title..."
+          />
+          
+          <label className={styles.sliderGroup} style={{ marginTop: '4px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+              <span>Font size multiplier</span>
+              <strong>{state.fontSizeMultiplier.toFixed(1)}×</strong>
+            </div>
+            <input
+              type="range"
+              min="0.5"
+              max="2.5"
+              step="0.1"
+              value={state.fontSizeMultiplier}
+              onChange={(e) => onFontSizeMultiplierChange(parseFloat(e.target.value))}
+              style={{ width: '100%' }}
+            />
+          </label>
+        </div>
+      )}
+
+      {hasSocial && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <h3 className={styles.sectionTitle}>Headline (Social)</h3>
+          <textarea
+            className={styles.textarea}
+            value={socialValue}
+            onChange={(e) => onSocialChange(e.target.value)}
+            rows={4}
+            placeholder="Enter social post headline..."
+          />
+
+          <label className={styles.sliderGroup} style={{ marginTop: '4px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+              <span>Font size multiplier</span>
+              <strong>{state.socialFontSizeMultiplier.toFixed(1)}×</strong>
+            </div>
+            <input
+              type="range"
+              min="0.5"
+              max="2.5"
+              step="0.1"
+              value={state.socialFontSizeMultiplier}
+              onChange={(e) => onSocialFontSizeMultiplierChange(parseFloat(e.target.value))}
+              style={{ width: '100%' }}
+            />
+          </label>
+        </div>
+      )}
 
       <hr className={styles.dividerSub} />
-      <h4 className={styles.sectionTitle} style={{ color: '#0028A5' }}>Text Adjustments</h4>
+      <h4 className={styles.sectionTitle} style={{ color: '#0028A5' }}>Text Styling</h4>
 
-      <label className={styles.sliderGroup}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-          <span>Font size multiplier</span>
-          <strong>{state.fontSizeMultiplier.toFixed(1)}×</strong>
-        </div>
-        <input
-          type="range"
-          min="0.5"
-          max="2.5"
-          step="0.1"
-          value={state.fontSizeMultiplier}
-          onChange={(e) => onFontSizeMultiplierChange(parseFloat(e.target.value))}
-          style={{ width: '100%' }}
-        />
-      </label>
-
-      <div className={styles.checkboxLabel} style={{ marginTop: '8px' }}>
+      <div className={styles.checkboxLabel}>
         <input
           type="checkbox"
           id="textGlow"

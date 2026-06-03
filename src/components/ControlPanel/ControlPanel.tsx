@@ -44,8 +44,11 @@ export default function ControlPanel({
             <PanelTitle
               value={state.title}
               onChange={actions.setTitle}
+              socialValue={state.socialTitle}
+              onSocialChange={actions.setSocialTitle}
               state={state}
               onFontSizeMultiplierChange={actions.setFontSizeMultiplier}
+              onSocialFontSizeMultiplierChange={actions.setSocialFontSizeMultiplier}
               onTextGlowChange={actions.setTextGlow}
               onTextColorChange={actions.setTextColor}
             />

@@ -137,6 +137,7 @@ const TemplateCanvas = forwardRef<HTMLDivElement, Props>(
             '--canvas-width': fmt.widthPx,
             '--canvas-height': fmt.heightPx,
             '--font-size-multiplier': state.fontSizeMultiplier,
+            '--social-font-size-multiplier': state.socialFontSizeMultiplier,
           } as React.CSSProperties}
         >
           {/* Header bar - hidden for social templates */}
@@ -505,9 +506,9 @@ function SocialBody({
             <span
               style={{
                 position: 'absolute',
-                bottom: '10px',
-                right: '10px',
-                fontSize: '12px',
+                bottom: 'calc(var(--canvas-height) * 0.0133 * 1px)',
+                right: 'calc(var(--canvas-width) * 0.0222 * 1px)',
+                fontSize: 'calc(var(--canvas-width) * 0.0222 * 1px)',
                 color: state.textColor,
                 zIndex: 2,
                 opacity: 0.8,
@@ -524,9 +525,9 @@ function SocialBody({
       <div
         style={{
           position: 'absolute',
-          bottom: 'calc(var(--canvas-width) * 0.05 * 1px)',
-          left: 'calc(var(--canvas-width) * 0.05 * 1px)',
-          right: 'calc(var(--canvas-width) * 0.05 * 1px)',
+          bottom: 'calc(var(--canvas-height) * 0.0740 * 1px)',
+          left: 'calc(var(--canvas-width) * 0.0926 * 1px)',
+          right: 'calc(var(--canvas-width) * 0.0926 * 1px)',
           zIndex: 10,
           pointerEvents: 'none',
         }}
@@ -535,16 +536,16 @@ function SocialBody({
           <h1
             style={{
               margin: 0,
-              fontSize: 'calc(var(--canvas-width) * 0.045 * var(--font-size-multiplier, 1) * 1px)',
+              fontSize: 'calc(var(--canvas-width) * 0.0778 * var(--social-font-size-multiplier, 1) * 1px)',
               fontWeight: 700,
-              lineHeight: 1.15,
+              lineHeight: 1.08,
               color: state.textColor,
               pointerEvents: 'auto',
               whiteSpace: 'pre-wrap',
               ...glowStyle,
             }}
           >
-            {state.title || 'Your Event Title'}
+            {state.socialTitle || 'Your Event Title'}
           </h1>
         ))}
       </div>
