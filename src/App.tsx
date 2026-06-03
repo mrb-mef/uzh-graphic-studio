@@ -10,7 +10,7 @@ import styles from './App.module.css';
 
 export default function App() {
   const { state, ...actions } = useDesignState();
-  const { registerCanvas, exportAll, exporting } = useExport();
+  const { registerCanvas, exportAll, exportSingle, exporting } = useExport();
   const [activeZone, setActiveZone] = useState<ZoneId | null>(null);
 
   const handleZoneClick = useCallback((zone: ZoneId) => {
@@ -46,7 +46,8 @@ export default function App() {
           actions={actions}
           activeZone={activeZone}
           onZoneClose={handleZoneClose}
-          onExport={exportAll}
+          onExportAll={exportAll}
+          onExportSingle={exportSingle}
           exporting={exporting}
         />
       </div>

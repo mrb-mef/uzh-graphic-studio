@@ -1,4 +1,4 @@
-import type { DesignState, ZoneId } from '../../types';
+import type { DesignState, ZoneId, FormatId } from '../../types';
 import type { useDesignState } from '../../hooks/useDesignState';
 import PanelDesign from './PanelDesign';
 import PanelColors from './PanelColors';
@@ -19,7 +19,8 @@ interface Props {
   actions: Omit<DesignActions, 'state'>;
   activeZone: ZoneId | null;
   onZoneClose: () => void;
-  onExport: () => void;
+  onExportAll: () => void;
+  onExportSingle: (id: FormatId, type: 'pdf' | 'png' | 'jpeg') => void;
   exporting: boolean;
 }
 
@@ -28,7 +29,8 @@ export default function ControlPanel({
   actions,
   activeZone,
   onZoneClose,
-  onExport,
+  onExportAll,
+  onExportSingle,
   exporting,
 }: Props) {
   return (
@@ -83,9 +85,15 @@ export default function ControlPanel({
           <hr className={styles.divider} />
           <PanelAI state={state} setTitle={actions.setTitle} setBoxText={actions.setBoxText} />
           <hr className={styles.divider} />
-          <PanelExport onExport={onExport} exporting={exporting} />
+          <PanelExport
+            activeFormatIds={state.activeFormatIds}
+            onExportAll={onExportAll}
+            onExportSingle={onExportSingle}
+            exporting={exporting}
+          />
         </div>
       )}
     </aside>
   );
 }
+

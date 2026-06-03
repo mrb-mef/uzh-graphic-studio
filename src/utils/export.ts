@@ -1,5 +1,6 @@
-import { toBlob } from 'html-to-image';
+import { toBlob, toPng } from 'html-to-image';
 import JSZip from 'jszip';
+import { jsPDF } from 'jspdf';
 import type { FormatId } from '../types';
 import { getFormatById } from '../data/formats';
 
@@ -21,9 +22,66 @@ export async function exportFormatAsPng(
     },
   });
   if (!blob) {
-    throw new Error(`Failed to render format ${formatId} to image`);
+    throw new Error(`Failed to render format ${formatId} to PNG`);
   }
   return blob;
+}
+
+export async function exportFormatAsJpeg(
+  el: HTMLElement,
+  formatId: FormatId,
+): Promise<Blob> {
+  const fmt = getFormatById(formatId);
+  const blob = await toBlob(el, {
+    width: fmt.widthPx,
+    height: fmt.heightPx,
+    pixelRatio: 1,
+    type: 'image/jpeg',
+    quality: 0.95,
+    style: {
+      transform: 'none',
+      transformOrigin: 'top left',
+      position: 'relative',
+      top: '0',
+      left: '0',
+    },
+  });
+  if (!blob) {
+    throw new Error(`Failed to render format ${formatId} to JPEG`);
+  }
+  return blob;
+}
+
+export async function exportFormatAsPdf(
+  el: HTMLElement,
+  formatId: FormatId,
+): Promise<Blob> {
+  const fmt = getFormatById(formatId);
+  const dataUrl = await toPng(el, {
+    width: fmt.widthPx,
+    height: fmt.heightPx,
+    pixelRatio: 1,
+    style: {
+      transform: 'none',
+      transformOrigin: 'top left',
+      position: 'relative',
+      top: '0',
+      left: '0',
+    },
+  });
+  if (!dataUrl) {
+    throw new Error(`Failed to render format ${formatId} for PDF`);
+  }
+
+  const pdf = new jsPDF({
+    orientation: fmt.widthPx > fmt.heightPx ? 'landscape' : 'portrait',
+    unit: 'px',
+    format: [fmt.widthPx, fmt.heightPx],
+    hotfixes: ['px_scaling'],
+  });
+
+  pdf.addImage(dataUrl, 'PNG', 0, 0, fmt.widthPx, fmt.heightPx);
+  return pdf.output('blob');
 }
 
 export async function exportAllAsZip(
@@ -33,9 +91,21 @@ export async function exportAllAsZip(
   const zip = new JSZip();
 
   for (const [formatId, el] of canvasElements.entries()) {
-    console.log(`Rendering format ${formatId}...`);
-    const blob = await exportFormatAsPng(el, formatId);
-    zip.file(`uzh-graphic-${formatId}.png`, blob);
+    const fmt = getFormatById(formatId);
+    console.log(`Rendering format ${fmt.label} (${formatId})...`);
+
+    if (fmt.category === 'print') {
+      // Print options get default PDF download
+      const pdfBlob = await exportFormatAsPdf(el, formatId);
+      zip.file(`uzh-graphic-${formatId}.pdf`, pdfBlob);
+    } else {
+      // Social and Digital get PNG and JPEG
+      const pngBlob = await exportFormatAsPng(el, formatId);
+      zip.file(`uzh-graphic-${formatId}.png`, pngBlob);
+
+      const jpegBlob = await exportFormatAsJpeg(el, formatId);
+      zip.file(`uzh-graphic-${formatId}.jpg`, jpegBlob);
+    }
   }
 
   console.log('Generating ZIP file...');
@@ -47,14 +117,13 @@ export async function exportAllAsZip(
   a.href = url;
   a.download = 'uzh-graphic-studio-export.zip';
   
-  // Appending to the body is required in Firefox and many other browser configurations
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   
-  // Delay revocation to ensure the browser has started the download stream
   setTimeout(() => {
     URL.revokeObjectURL(url);
     console.log('Export resources cleaned up successfully.');
   }, 1500);
 }
+

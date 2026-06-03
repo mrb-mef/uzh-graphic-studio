@@ -350,3 +350,62 @@
   font-size: 13px;
   cursor: pointer;
 }
+
+/* ── Individual Exports ── */
+.individualExports {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.exportItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background: #f7f7f9;
+  border-radius: 4px;
+  border: 1px solid #e9e9ee;
+}
+
+.exportLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+}
+
+.exportButtons {
+  display: flex;
+  gap: 4px;
+}
+
+.singleExportBtn {
+  padding: 4px 8px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  background: #fff;
+  border: 1px solid #d1d1db;
+  border-radius: 3px;
+  cursor: pointer;
+  color: #0028A5;
+  transition: all 0.1s ease;
+}
+
+.singleExportBtn:hover:not(:disabled) {
+  background: #EEF2FF;
+  border-color: #0028A5;
+}
+
+.singleExportBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.dividerSub {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 12px 0;
+}
+
