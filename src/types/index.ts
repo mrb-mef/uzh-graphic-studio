@@ -62,6 +62,12 @@ export interface DesignState {
   socialTitle: string;
   socialFontSizeMultiplier: number;
   socialImageCredit: string | null;
+  socialImageZoom: number;
+  socialImageOffsetX: number;
+  socialImageOffsetY: number;
+  socialGradientEnabled: boolean;
+  socialGradientStart: number;
+  socialGradientColor: string;
 }
 
 export type ZoneId =

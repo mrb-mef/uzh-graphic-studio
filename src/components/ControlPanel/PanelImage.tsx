@@ -26,6 +26,12 @@ interface Props {
   onGradientEnabledChange: (v: boolean) => void;
   onGradientStartChange: (v: number) => void;
   onGradientColorChange: (v: string) => void;
+  onSocialImageZoomChange: (v: number) => void;
+  onSocialImageOffsetXChange: (v: number) => void;
+  onSocialImageOffsetYChange: (v: number) => void;
+  onSocialGradientEnabledChange: (v: boolean) => void;
+  onSocialGradientStartChange: (v: number) => void;
+  onSocialGradientColorChange: (v: string) => void;
   onImageCreditChange: (v: string | null) => void;
   onSocialImageCreditChange: (v: string | null) => void;
 }
@@ -36,9 +42,12 @@ export default function PanelImage({
   onImageZoomChange,
   onImageOffsetXChange,
   onImageOffsetYChange,
-  onGradientEnabledChange,
-  onGradientStartChange,
-  onGradientColorChange,
+  onSocialImageZoomChange,
+  onSocialImageOffsetXChange,
+  onSocialImageOffsetYChange,
+  onSocialGradientEnabledChange,
+  onSocialGradientStartChange,
+  onSocialGradientColorChange,
   onImageCreditChange,
   onSocialImageCreditChange,
 }: Props) {
@@ -49,6 +58,16 @@ export default function PanelImage({
   const [wikiResults, setWikiResults] = useState<WikiPhoto[]>([]);
   const [searching, setSearching] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const hasPrintOrDigital = state.activeFormatIds.some((id) => {
+    const fmt = getFormatById(id);
+    return fmt.category === 'print' || fmt.category === 'digital';
+  });
+
+  const hasSocial = state.activeFormatIds.some((id) => {
+    const fmt = getFormatById(id);
+    return fmt.category === 'social';
+  });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -201,165 +220,209 @@ export default function PanelImage({
         <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <hr className={styles.dividerSub} />
           <h4 className={styles.sectionTitle} style={{ color: '#0028A5' }}>Step 3.3: Adjust Image</h4>
-          
-          <div className={styles.checkboxLabel}>
-            <input
-              type="checkbox"
-              id="gradientEnabled"
-              checked={state.gradientEnabled}
-              onChange={(e) => onGradientEnabledChange(e.target.checked)}
-            />
-            <label htmlFor="gradientEnabled" style={{ fontWeight: 600 }}>Enable brand gradient overlay</label>
-          </div>
 
-          <label className={styles.sliderGroup}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-              <span>Zoom</span>
-              <strong>{state.imageZoom.toFixed(2)}×</strong>
-            </div>
-            <input
-              type="range"
-              min="1"
-              max="3"
-              step="0.01"
-              value={state.imageZoom}
-              onChange={(e) => onImageZoomChange(parseFloat(e.target.value))}
-              style={{ width: '100%' }}
-            />
-          </label>
-
-          <label className={styles.sliderGroup}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-              <span>Horizontal position</span>
-              <strong>{Math.round(state.imageOffsetX)}px</strong>
-            </div>
-            <input
-              type="range"
-              min="-1000"
-              max="1000"
-              step="1"
-              value={state.imageOffsetX}
-              onChange={(e) => onImageOffsetXChange(parseInt(e.target.value))}
-              style={{ width: '100%' }}
-            />
-          </label>
-
-          <label className={styles.sliderGroup}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-              <span>Vertical position</span>
-              <strong>{Math.round(state.imageOffsetY)}px</strong>
-            </div>
-            <input
-              type="range"
-              min="-1000"
-              max="1000"
-              step="1"
-              value={state.imageOffsetY}
-              onChange={(e) => onImageOffsetYChange(parseInt(e.target.value))}
-              style={{ width: '100%' }}
-            />
-          </label>
-
-          {state.gradientEnabled && (
-            <>
+          {hasPrintOrDigital && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: hasSocial ? '1.5rem' : '0' }}>
+              <h5 className={styles.sectionTitle} style={{ margin: 0, fontSize: '13px', color: '#555' }}>Print & Digital Adjustments</h5>
+              
               <label className={styles.sliderGroup}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-                  <span>Gradient start</span>
-                  <strong>{Math.round(state.gradientStart * 100)}%</strong>
+                  <span>Zoom</span>
+                  <strong>{state.imageZoom.toFixed(2)}×</strong>
                 </div>
                 <input
                   type="range"
-                  min="0"
-                  max="1"
+                  min="1"
+                  max="3"
                   step="0.01"
-                  value={state.gradientStart}
-                  onChange={(e) => onGradientStartChange(parseFloat(e.target.value))}
+                  value={state.imageZoom}
+                  onChange={(e) => onImageZoomChange(parseFloat(e.target.value))}
                   style={{ width: '100%' }}
                 />
               </label>
 
-              <div className={styles.field}>
-                <span style={{ fontSize: '12px' }}>Gradient overlay color</span>
-                <div className={styles.colorPickerWrapper} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '4px' }}>
-                  <input
-                    type="color"
-                    value={state.gradientColor}
-                    onChange={(e) => onGradientColorChange(e.target.value)}
-                    className={styles.colorPicker}
-                  />
-                  <div className={styles.colorPresets} style={{ display: 'flex', gap: '4px' }}>
-                    {[
-                      getSwatchById(state.colorSwatchId).background,
-                      getSwatchById(state.colorSwatchId).accent,
-                      getSwatchById(state.colorSwatchId).textPrimary,
-                      getSwatchById(state.colorSwatchId).textSecondary,
-                    ].map((c) => (
-                      <button
-                        key={c}
-                        type="button"
-                        className={`${styles.colorPreset} ${state.gradientColor === c ? styles.colorPresetActive : ''}`}
-                        style={{
-                          backgroundColor: c,
-                          width: '18px',
-                          height: '18px',
-                          borderRadius: '50%',
-                          border: state.gradientColor === c ? '2px solid #0028A5' : '1px solid #ccc',
-                          cursor: 'pointer',
-                        }}
-                        onClick={() => onGradientColorChange(c)}
-                      />
-                    ))}
-                  </div>
+              <label className={styles.sliderGroup}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                  <span>Horizontal position</span>
+                  <strong>{Math.round(state.imageOffsetX)}px</strong>
                 </div>
+                <input
+                  type="range"
+                  min="-1000"
+                  max="1000"
+                  step="1"
+                  value={state.imageOffsetX}
+                  onChange={(e) => onImageOffsetXChange(parseInt(e.target.value))}
+                  style={{ width: '100%' }}
+                />
+              </label>
+
+              <label className={styles.sliderGroup}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                  <span>Vertical position</span>
+                  <strong>{Math.round(state.imageOffsetY)}px</strong>
+                </div>
+                <input
+                  type="range"
+                  min="-1000"
+                  max="1000"
+                  step="1"
+                  value={state.imageOffsetY}
+                  onChange={(e) => onImageOffsetYChange(parseInt(e.target.value))}
+                  style={{ width: '100%' }}
+                />
+              </label>
+            </div>
+          )}
+
+          {hasSocial && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <h5 className={styles.sectionTitle} style={{ margin: 0, fontSize: '13px', color: '#555' }}>Social Adjustments</h5>
+              
+              <div className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  id="socialGradientEnabled"
+                  checked={state.socialGradientEnabled}
+                  onChange={(e) => onSocialGradientEnabledChange(e.target.checked)}
+                />
+                <label htmlFor="socialGradientEnabled" style={{ fontWeight: 600 }}>Enable brand gradient overlay</label>
               </div>
-            </>
+
+              <label className={styles.sliderGroup}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                  <span>Zoom</span>
+                  <strong>{state.socialImageZoom.toFixed(2)}×</strong>
+                </div>
+                <input
+                  type="range"
+                  min="1"
+                  max="3"
+                  step="0.01"
+                  value={state.socialImageZoom}
+                  onChange={(e) => onSocialImageZoomChange(parseFloat(e.target.value))}
+                  style={{ width: '100%' }}
+                />
+              </label>
+
+              <label className={styles.sliderGroup}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                  <span>Horizontal position</span>
+                  <strong>{Math.round(state.socialImageOffsetX)}px</strong>
+                </div>
+                <input
+                  type="range"
+                  min="-1000"
+                  max="1000"
+                  step="1"
+                  value={state.socialImageOffsetX}
+                  onChange={(e) => onSocialImageOffsetXChange(parseInt(e.target.value))}
+                  style={{ width: '100%' }}
+                />
+              </label>
+
+              <label className={styles.sliderGroup}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                  <span>Vertical position</span>
+                  <strong>{Math.round(state.socialImageOffsetY)}px</strong>
+                </div>
+                <input
+                  type="range"
+                  min="-1000"
+                  max="1000"
+                  step="1"
+                  value={state.socialImageOffsetY}
+                  onChange={(e) => onSocialImageOffsetYChange(parseInt(e.target.value))}
+                  style={{ width: '100%' }}
+                />
+              </label>
+
+              {state.socialGradientEnabled && (
+                <>
+                  <label className={styles.sliderGroup}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                      <span>Gradient start</span>
+                      <strong>{Math.round(state.socialGradientStart * 100)}%</strong>
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value={state.socialGradientStart}
+                      onChange={(e) => onSocialGradientStartChange(parseFloat(e.target.value))}
+                      style={{ width: '100%' }}
+                    />
+                  </label>
+
+                  <div className={styles.field}>
+                    <span style={{ fontSize: '12px' }}>Gradient overlay color</span>
+                    <div className={styles.colorPickerWrapper} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '4px' }}>
+                      <input
+                        type="color"
+                        value={state.socialGradientColor}
+                        onChange={(e) => onSocialGradientColorChange(e.target.value)}
+                        className={styles.colorPicker}
+                      />
+                      <div className={styles.colorPresets} style={{ display: 'flex', gap: '4px' }}>
+                        {[
+                          getSwatchById(state.colorSwatchId).background,
+                          getSwatchById(state.colorSwatchId).accent,
+                          getSwatchById(state.colorSwatchId).textPrimary,
+                          getSwatchById(state.colorSwatchId).textSecondary,
+                        ].map((c) => (
+                          <button
+                            key={c}
+                            type="button"
+                            className={`${styles.colorPreset} ${state.socialGradientColor === c ? styles.colorPresetActive : ''}`}
+                            style={{
+                              backgroundColor: c,
+                              width: '18px',
+                              height: '18px',
+                              borderRadius: '50%',
+                              border: state.socialGradientColor === c ? '2px solid #0028A5' : '1px solid #ccc',
+                              cursor: 'pointer',
+                            }}
+                            onClick={() => onSocialGradientColorChange(c)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
           )}
 
           <hr className={styles.dividerSub} />
 
-          {(() => {
-            const hasPrintOrDigital = state.activeFormatIds.some((id) => {
-              const fmt = getFormatById(id);
-              return fmt.category === 'print' || fmt.category === 'digital';
-            });
+          {hasPrintOrDigital && (
+            <label className={styles.field} style={{ marginBottom: hasSocial ? '12px' : '0' }}>
+              <span style={{ fontSize: '12px' }}>Optional image credit (Print & Digital)</span>
+              <input
+                type="text"
+                className={styles.input}
+                value={state.imageCredit || ''}
+                onChange={(e) => onImageCreditChange(e.target.value || null)}
+                placeholder="e.g. Photo: UZH / Name"
+                style={{ marginTop: '4px' }}
+              />
+            </label>
+          )}
 
-            const hasSocial = state.activeFormatIds.some((id) => {
-              const fmt = getFormatById(id);
-              return fmt.category === 'social';
-            });
-
-            return (
-              <>
-                {hasPrintOrDigital && (
-                  <label className={styles.field} style={{ marginBottom: hasSocial ? '12px' : '0' }}>
-                    <span style={{ fontSize: '12px' }}>Optional image credit (Print & Digital)</span>
-                    <input
-                      type="text"
-                      className={styles.input}
-                      value={state.imageCredit || ''}
-                      onChange={(e) => onImageCreditChange(e.target.value || null)}
-                      placeholder="e.g. Photo: UZH / Name"
-                      style={{ marginTop: '4px' }}
-                    />
-                  </label>
-                )}
-
-                {hasSocial && (
-                  <label className={styles.field}>
-                    <span style={{ fontSize: '12px' }}>Optional image credit (Social)</span>
-                    <input
-                      type="text"
-                      className={styles.input}
-                      value={state.socialImageCredit || ''}
-                      onChange={(e) => onSocialImageCreditChange(e.target.value || null)}
-                      placeholder="e.g. Photo: UZH / Name"
-                      style={{ marginTop: '4px' }}
-                    />
-                  </label>
-                )}
-              </>
-            );
-          })()}
+          {hasSocial && (
+            <label className={styles.field}>
+              <span style={{ fontSize: '12px' }}>Optional image credit (Social)</span>
+              <input
+                type="text"
+                className={styles.input}
+                value={state.socialImageCredit || ''}
+                onChange={(e) => onSocialImageCreditChange(e.target.value || null)}
+                placeholder="e.g. Photo: UZH / Name"
+                style={{ marginTop: '4px' }}
+              />
+            </label>
+          )}
         </div>
       )}
     </div>

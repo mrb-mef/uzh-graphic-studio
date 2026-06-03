@@ -91,9 +91,19 @@ const TemplateCanvas = forwardRef<HTMLDivElement, Props>(
       transition: 'transform 0.05s ease-out',
     };
 
+    const socialImageStyle: React.CSSProperties = {
+      transform: `scale(${state.socialImageZoom}) translate(${state.socialImageOffsetX}px, ${state.socialImageOffsetY}px)`,
+      transformOrigin: 'center center',
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      display: 'block',
+      transition: 'transform 0.05s ease-out',
+    };
+
     const renderGradientOverlay = () => {
       if (fmt.category !== 'social') return null;
-      if (!state.gradientEnabled || !state.imageUrl) return null;
+      if (!state.socialGradientEnabled || !state.imageUrl) return null;
       return (
         <div
           style={{
@@ -102,7 +112,7 @@ const TemplateCanvas = forwardRef<HTMLDivElement, Props>(
             left: 0,
             right: 0,
             bottom: 0,
-            background: `linear-gradient(to bottom, transparent ${state.gradientStart * 100}%, ${state.gradientColor} 100%)`,
+            background: `linear-gradient(to bottom, transparent ${state.socialGradientStart * 100}%, ${state.socialGradientColor} 100%)`,
             pointerEvents: 'none',
             zIndex: 1,
           }}
@@ -163,7 +173,7 @@ const TemplateCanvas = forwardRef<HTMLDivElement, Props>(
               swatch={swatch}
               zone={zone}
               renderFooter={renderFooter}
-              imageStyle={imageStyle}
+              imageStyle={socialImageStyle}
               renderGradientOverlay={renderGradientOverlay}
               glowStyle={glowStyle}
             />

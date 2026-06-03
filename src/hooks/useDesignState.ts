@@ -35,6 +35,12 @@ const INITIAL_STATE: DesignState = {
   socialTitle: 'Your Event Title',
   socialFontSizeMultiplier: 1.0,
   socialImageCredit: null,
+  socialImageZoom: 1.0,
+  socialImageOffsetX: 0,
+  socialImageOffsetY: 0,
+  socialGradientEnabled: true,
+  socialGradientStart: 0.5,
+  socialGradientColor: '#0028A5',
 };
 
 export function useDesignState() {
@@ -90,6 +96,12 @@ export function useDesignState() {
   const setSocialTitle = useCallback((v: string) => update('socialTitle', v), [update]);
   const setSocialFontSizeMultiplier = useCallback((v: number) => update('socialFontSizeMultiplier', v), [update]);
   const setSocialImageCredit = useCallback((v: string | null) => update('socialImageCredit', v), [update]);
+  const setSocialImageZoom = useCallback((v: number) => update('socialImageZoom', v), [update]);
+  const setSocialImageOffsetX = useCallback((v: number) => update('socialImageOffsetX', v), [update]);
+  const setSocialImageOffsetY = useCallback((v: number) => update('socialImageOffsetY', v), [update]);
+  const setSocialGradientEnabled = useCallback((v: boolean) => update('socialGradientEnabled', v), [update]);
+  const setSocialGradientStart = useCallback((v: number) => update('socialGradientStart', v), [update]);
+  const setSocialGradientColor = useCallback((v: string) => update('socialGradientColor', v), [update]);
 
   return {
     state,
@@ -125,5 +137,11 @@ export function useDesignState() {
     setSocialTitle,
     setSocialFontSizeMultiplier,
     setSocialImageCredit,
+    setSocialImageZoom,
+    setSocialImageOffsetX,
+    setSocialImageOffsetY,
+    setSocialGradientEnabled,
+    setSocialGradientStart,
+    setSocialGradientColor,
   };
 }

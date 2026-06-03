@@ -76,6 +76,12 @@ export default function ControlPanel({
               onGradientEnabledChange={actions.setGradientEnabled}
               onGradientStartChange={actions.setGradientStart}
               onGradientColorChange={actions.setGradientColor}
+              onSocialImageZoomChange={actions.setSocialImageZoom}
+              onSocialImageOffsetXChange={actions.setSocialImageOffsetX}
+              onSocialImageOffsetYChange={actions.setSocialImageOffsetY}
+              onSocialGradientEnabledChange={actions.setSocialGradientEnabled}
+              onSocialGradientStartChange={actions.setSocialGradientStart}
+              onSocialGradientColorChange={actions.setSocialGradientColor}
               onImageCreditChange={actions.setImageCredit}
               onSocialImageCreditChange={actions.setSocialImageCredit}
             />
