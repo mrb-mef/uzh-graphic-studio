@@ -14,7 +14,7 @@ export default function Header() {
           onClick={() => setIsChangelogOpen(true)}
           title="View change log"
         >
-          v1.2.0
+          v1.3.0
         </button>
       </div>
       <span className={styles.tagline}>Brand-compliant visual assets for UZH</span>
