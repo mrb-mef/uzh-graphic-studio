@@ -1,0 +1,49 @@
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 8px 24px;
+  background: #fff;
+  border-bottom: 1px solid #e7e7e7;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.groupLabel {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #aaa;
+  margin-right: 2px;
+}
+
+.toggle {
+  padding: 4px 10px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  background: #fff;
+  cursor: pointer;
+  color: #555;
+  transition: background 0.1s, border-color 0.1s, color 0.1s;
+}
+
+.toggle:hover {
+  border-color: #0028A5;
+  color: #0028A5;
+}
+
+.toggleActive {
+  background: #0028A5;
+  color: #fff;
+  border-color: #0028A5;
+}

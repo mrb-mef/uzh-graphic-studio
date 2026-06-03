@@ -1,0 +1,357 @@
+/* Outer wrapper constrains the scaled canvas to its visual footprint */
+.wrapper {
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+  border-radius: 2px;
+}
+
+/* The actual canvas element — rendered at full resolution, then scaled down */
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: center;
+  padding: calc(var(--canvas-width) * 0.0345 * 1px);
+  gap: calc(var(--canvas-width) * 0.0345 * 1px);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.logoZone {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logoImg {
+  height: calc(var(--canvas-width) * 0.0690 * 1px);
+  width: auto;
+}
+
+.headerDivider {
+  width: calc(var(--canvas-width) * 0.0008 * 1px);
+  height: calc(var(--canvas-width) * 0.0690 * 1px);
+  flex-shrink: 0;
+}
+
+.orgUnitZone {
+  flex: 1;
+  cursor: pointer;
+}
+
+.orgUnitText {
+  font-size: calc(var(--canvas-width) * 0.0213 * 1px);
+  line-height: 1.2;
+  font-weight: 400;
+}
+
+/* ── Shared zone click affordance ── */
+.zone {
+  outline: none !important;
+}
+
+.zone:hover {
+  box-shadow: inset 0 0 0 calc(var(--canvas-width) * 0.002 * 1px) rgba(0, 40, 165, 0.35);
+  cursor: pointer;
+}
+
+.zone:focus,
+.zone:focus-visible,
+.zone:active,
+.zone *:focus,
+.zone *:focus-visible,
+.zone *:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+/* ── Body container ── */
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Layout 1 (Classic Brand Flyer) ── */
+.layout1Body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout1ImageZone {
+  position: absolute;
+  top: 0;
+  left: calc(var(--canvas-width) * 0.0345 * 1px);
+  right: calc(var(--canvas-width) * 0.0345 * 1px);
+  bottom: calc(var(--canvas-width) * 0.0345 * 1px);
+  z-index: 1;
+  overflow: hidden;
+}
+
+.layout1ImageZoneWithFooter {
+  bottom: calc(var(--canvas-height) * 0.0790 * 1px);
+}
+
+.layout1TextOverlay {
+  position: absolute;
+  z-index: 10;
+  background-color: #ffffff;
+  width: calc(var(--canvas-width) * 0.6480 * 1px);
+  top: calc(var(--canvas-height) * 0.4614 * 1px); /* 55.90% - 9.76% header height = 46.14% */
+  left: 0;
+  padding: calc(var(--canvas-height) * 0.015 * 1px) calc(var(--canvas-width) * 0.0345 * 1px);
+  box-shadow: 0 calc(var(--canvas-width) * 0.005 * 1px) calc(var(--canvas-width) * 0.02 * 1px) rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+.layout1Title {
+  font-size: calc(var(--canvas-width) * 0.0387 * 1px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 calc(var(--canvas-width) * 0.0129 * 1px) 0;
+}
+
+.layout1Subtitle {
+  font-size: calc(var(--canvas-width) * 0.0225 * 1px);
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.imageTop {
+  flex: 2;
+  overflow: hidden;
+  position: relative;
+}
+
+.contentRow {
+  display: flex;
+  flex: 1.8;
+}
+
+.contentRowLandscape {
+  flex: 3;
+}
+
+.textBox {
+  flex: 2;
+  overflow: hidden;
+  padding: calc(var(--canvas-width) * 0.0322 * 1px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.textBoxInner {
+  padding: calc(var(--canvas-width) * 0.0322 * 1px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.imageSide {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.imageBottom {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Layout 2 ── */
+.twoCol {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.textBoxFull {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.imageSideFull {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Layout 3 (full bleed) ── */
+.imageFullBleed {
+  position: absolute !important;
+  inset: 0;
+  z-index: 0;
+}
+
+.textOverlay {
+  position: absolute !important;
+  bottom: calc(var(--canvas-width) * 0.0645 * 1px);
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.55);
+  padding: calc(var(--canvas-width) * 0.0322 * 1px);
+  color: #fff;
+}
+
+/* ── Layout 4 ── */
+.textFocus {
+  flex: 2;
+  padding: calc(var(--canvas-width) * 0.0322 * 1px);
+  display: flex;
+  align-items: center;
+}
+
+.imageStrip {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Typography ── */
+.title {
+  font-size: calc(var(--canvas-width) * 0.0387 * 1px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 calc(var(--canvas-width) * 0.0193 * 1px);
+  color: inherit;
+}
+
+.titleLarge {
+  font-size: calc(var(--canvas-width) * 0.0484 * 1px);
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0 0 calc(var(--canvas-width) * 0.0193 * 1px);
+  color: #fff;
+}
+
+.titleXL {
+  font-size: calc(var(--canvas-width) * 0.0645 * 1px);
+  font-weight: 700;
+  line-height: 1;
+  margin: 0 0 calc(var(--canvas-width) * 0.0258 * 1px);
+}
+
+.boxText {
+  font-size: calc(var(--canvas-width) * 0.0225 * 1px);
+  line-height: 1.45;
+  margin: 0;
+  color: inherit;
+  white-space: pre-wrap;
+}
+
+.boxTextLarge {
+  font-size: calc(var(--canvas-width) * 0.029 * 1px);
+  line-height: 1.45;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* ── Click Zones ── */
+.titleZone {
+  display: block;
+  cursor: pointer;
+  outline: none;
+}
+
+.titleZone:hover {
+  box-shadow: inset 0 0 0 calc(var(--canvas-width) * 0.002 * 1px) rgba(0, 40, 165, 0.35);
+}
+
+.boxTextZone {
+  display: block;
+  cursor: pointer;
+  outline: none;
+  margin-top: calc(var(--canvas-width) * 0.0161 * 1px);
+}
+
+.boxTextZone:hover {
+  box-shadow: inset 0 0 0 calc(var(--canvas-width) * 0.002 * 1px) rgba(0, 40, 165, 0.35);
+}
+
+/* ── Image helpers ── */
+.fillImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Footer / QR ── */
+.footer {
+  display: flex;
+  align-items: center;
+  padding: 0 calc(var(--canvas-width) * 0.0345 * 1px);
+  height: calc(var(--canvas-height) * 0.0790 * 1px);
+  flex-shrink: 0;
+  border-top: calc(var(--canvas-width) * 0.00161 * 1px) solid currentColor;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin-top: auto;
+}
+
+.footerPlaceholder {
+  border-top: calc(var(--canvas-width) * 0.00161 * 1px) dashed rgba(0, 40, 165, 0.5);
+  background-color: rgba(0, 40, 165, 0.03);
+  margin-top: auto;
+}
+
+.footerInner {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--canvas-width) * 0.0161 * 1px);
+  width: 100%;
+}
+
+.qrImg {
+  width: calc(var(--canvas-width) * 0.0690 * 1px);
+  height: calc(var(--canvas-width) * 0.0690 * 1px);
+  flex-shrink: 0;
+}
+
+.qrImgPlaceholder {
+  width: calc(var(--canvas-width) * 0.0690 * 1px);
+  height: calc(var(--canvas-width) * 0.0690 * 1px);
+  border: calc(var(--canvas-width) * 0.00161 * 1px) dashed currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.qrPlaceholderText {
+  font-size: calc(var(--canvas-width) * 0.0161 * 1px);
+  font-weight: 700;
+}
+
+.urlText {
+  font-size: calc(var(--canvas-width) * 0.0193 * 1px);
+  word-break: break-all;
+}

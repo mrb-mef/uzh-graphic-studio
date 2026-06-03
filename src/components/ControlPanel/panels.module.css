@@ -1,0 +1,352 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sectionTitle {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #888;
+  margin: 0;
+  padding-bottom: 4px;
+}
+
+.textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.5;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  resize: vertical;
+  outline: none;
+}
+
+.textarea:focus {
+  border-color: #0028A5;
+}
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #0028A5;
+}
+
+.select {
+  width: 100%;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: #fff;
+  outline: none;
+  cursor: pointer;
+}
+
+.select:focus {
+  border-color: #0028A5;
+}
+
+/* ── Preset buttons ── */
+.presetGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.presetBtn {
+  padding: 8px 6px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.presetBtn:hover {
+  border-color: #0028A5;
+  color: #0028A5;
+}
+
+.presetBtnActive {
+  background: #0028A5;
+  color: #fff;
+  border-color: #0028A5;
+}
+
+/* ── Color swatches ── */
+.swatchGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.swatchBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  background: #fafafa;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.12s;
+}
+
+.swatchBtn:hover {
+  border-color: #0028A5;
+}
+
+.swatchBtnActive {
+  border-color: #0028A5;
+  background: #EEF2FF;
+}
+
+.swatchDot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.swatchLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* ── Chips / inline buttons ── */
+.buttonRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chipBtn {
+  padding: 5px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+}
+
+.chipBtn:hover {
+  border-color: #0028A5;
+  color: #0028A5;
+}
+
+.chipBtnActive {
+  background: #0028A5;
+  color: #fff;
+  border-color: #0028A5;
+}
+
+/* ── Image search ── */
+.tabRow {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.tabBtn {
+  flex: 1;
+  padding: 6px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.tabBtnActive {
+  background: #0028A5;
+  color: #fff;
+  border-color: #0028A5;
+}
+
+.uploadArea {
+  border: 2px dashed #c2c2c2;
+  border-radius: 4px;
+  padding: 24px 12px;
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  cursor: pointer;
+  transition: border-color 0.12s;
+}
+
+.uploadArea:hover {
+  border-color: #0028A5;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.searchRow {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 7px 9px;
+  font-family: inherit;
+  font-size: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: #0028A5;
+}
+
+.searchBtn {
+  padding: 7px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  background: #0028A5;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.searchBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.photoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.photoThumb {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: opacity 0.1s;
+}
+
+.photoThumb:hover {
+  opacity: 0.8;
+}
+
+/* ── Export ── */
+.exportBtn {
+  width: 100%;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  background: #0028A5;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.exportBtn:hover:not(:disabled) {
+  background: #001E7C;
+}
+
+.exportBtn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* ── Generic ── */
+.primaryBtn {
+  padding: 8px 14px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  background: #0028A5;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.primaryBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.clearBtn {
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  background: none;
+  border: 1px solid #c2c2c2;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #666;
+}
+
+.clearBtn:hover {
+  border-color: #BF0D3E;
+  color: #BF0D3E;
+}
+
+.hint {
+  font-size: 11px;
+  color: #888;
+  margin: 2px 0 0;
+}
+
+.warn {
+  font-size: 11px;
+  color: #F3AB00;
+  margin: 4px 0;
+}
+
+.error {
+  font-size: 11px;
+  color: #BF0D3E;
+  margin: 4px 0;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}

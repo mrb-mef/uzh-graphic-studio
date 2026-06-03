@@ -1,0 +1,128 @@
+.workspace {
+  flex: 1;
+  overflow: auto;
+  background: #f0f0f0;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 40px;
+  align-items: flex-start;
+  min-height: 100%;
+}
+
+.canvasSlot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.formatLabel {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #666;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+/* ── Zoom Controls ── */
+.zoomContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  align-self: center;
+}
+
+.zoomToolbar {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 30px;
+  padding: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.zoomBtn {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+}
+
+.zoomBtn:hover:not(:disabled) {
+  background: rgba(0, 40, 165, 0.08);
+  color: #0028A5;
+  transform: scale(1.05);
+}
+
+.zoomBtn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.zoomBtn:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.zoomResetBtn {
+  background: transparent;
+  border: none;
+  height: 32px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  color: #333;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.zoomResetBtn:hover {
+  background: rgba(0, 40, 165, 0.08);
+  color: #0028A5;
+}
+
+.zoomResetBtn:active {
+  transform: scale(0.95);
+}
+
+.zoomLabel {
+  min-width: 38px;
+  text-align: center;
+}
+
+.resetIcon {
+  opacity: 0.5;
+  transition: transform 0.3s ease;
+}
+
+.zoomResetBtn:hover .resetIcon {
+  opacity: 1;
+  transform: rotate(-180deg);
+}
